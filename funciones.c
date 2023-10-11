@@ -103,6 +103,7 @@ void calcularEnerg(particulas * entrada, int N, particulas * salida, int part){
                 }
             else{
                 Ej_i += Ej;
+            }
         }
         salida[i].energia = Ej_i;
     }
