@@ -1,11 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "funciones.c"
 
-typedef struct particulas particulas;
 
-int lecturaArchivo(char* nombre, particulas * entrada);
+typedef struct particulas{
+    int posicion;
+    double energia;
+} particulas;
+
+int lecturaArchivo(char * nombre, particulas ** entrada);
 int indice(int posicion, particulas * entrada, int part);
-void calcularEnergActual(particulas * entrada, int N, particulas * salida, int part);
-void calcularEnerg(particulas * entrada, int N, particulas * salida, int part);
+void ordenarEnergiaActual(particulas * entrada, int N, particulas ** salida, int part);
+void calcularEnerg(particulas * entrada, int N, particulas ** salida, int part);
+int maximo(particulas * entrada, int N);
+int escribirArchivo(int N, particulas * salida, char * nombre);
+void imprimirGrafico(int N, particulas * salida);

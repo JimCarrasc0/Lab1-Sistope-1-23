@@ -1,35 +1,84 @@
 
 /*
 To do:
-    -Programar para linux
-    -Implementar GetOpt
-    -Implementar FLAGS
-    -Impementar calculo Ei
-    -Implementar método de ordenamiento
     -Implementar prints
     -Escribir archivo
-    -Makefile
 */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <ctype.h>
 #include "funciones.h"
 
 
 int main(int argc, char* argv[]){
-    if(argc<1){
+    if(argc<2){
         printf("Error: Argumentos insuficientes\n");
         exit(1);
     }
     
-    printf("%s\n",argv[1]);
+    int opt, N;
+    int flagD = 0;
+    char * archEntrada, * archSalida;
 
+    while((opt=getopt(argc, argv, "N:i:o:D"))!=-1){
+        switch(opt){
+            case 'N':
+                N = atoi(optarg);
+                break;
+            case 'i':
+                archEntrada = optarg;
+                break;
+            case 'o':
+                archSalida = optarg;
+                break;
+            case 'D':
+                flagD = 1;
+                break;
+            case '?':
+                if (optopt == 'N' || optopt == 'i' || optopt == 'o') {
+                    fprintf(stderr, "Opción -%c requiere un argumento.\n", optopt);
+                }
+                else if(isprint(optopt)){
+                    fprintf(stderr, "Opción -%c desconocida.\n", optopt);
+                }
+                else{
+                    fprintf(stderr, "Opcion No válida -%c.\n", optopt);
+                }
+                return 1;
 
-    // Se solicita el numero de particulas (N) a agregar
-    //int N = atoi(argv[1]);
-    int N=10;
+            default:
+                return 1;
+
+        }
+    }
+
+    particulas * entrada;
+    int part = lecturaArchivo (archEntrada, &entrada);
     
-    int MIN_ENERGIA = 0.001 / N;
+    particulas * salida;
+    ordenarEnergiaActual(entrada, N, &salida, part);
+    
+    particulas * salidaFinal;
+    calcularEnerg (salida, N, &salidaFinal, part);
+
+    /*maximo(salidaFinal, N);
+    
+    for(int i = 0; i<N; i++){
+        printf("Particula [%d] = %lf \n", i, salidaFinal[i].energia );
+    }
+    */
+
+    escribirArchivo(N, salidaFinal, archSalida);
+
+    if(flagD){
+        imprimirGrafico(N, salidaFinal);
+    }
+
+    free(salidaFinal);
+    free(salida);
+    free(entrada);
 
     return 0;
 }
