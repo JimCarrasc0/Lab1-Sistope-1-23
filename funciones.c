@@ -1,12 +1,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 
 
 typedef struct particulas{
     int posicion;
-    int energia;
+    double energia;
 } particulas;
 
 //Entrada: Nombre de archivo (char), lista de particulas (struct particulas)
@@ -14,7 +15,7 @@ typedef struct particulas{
 //Descripcion: Funcion que lee un archivo y guarda particulas en una lista de particulas
 int lecturaArchivo(char * nombre, particulas * entrada){
     FILE * file = NULL;
-    file = fopen(nombre, 'r');
+    file = fopen(nombre, "r");
     //En caso de que haya un error en el archivo
     if(file == NULL){
         printf("Error al abrir el archivo\n");
@@ -27,7 +28,7 @@ int lecturaArchivo(char * nombre, particulas * entrada){
     entrada=malloc(sizeof(particulas)*part);
 
     for(int i=0;i<part;i++){
-        fscanf(file, "%d %d", &entrada[i].posicion, &entrada[i].energia);
+        fscanf(file, "%d %lf", &entrada[i].posicion, &entrada[i].energia);
     }
     fclose(file);
     //Se retorna la cantidad de particulas existentes
@@ -35,8 +36,9 @@ int lecturaArchivo(char * nombre, particulas * entrada){
 
 }
 
-int index(int posicion, particulas * entrada, int part){
-    for(int i=0;i<part;i++){
+int indice(int posicion, particulas * entrada, int part){
+    int i;
+    for(i=0;i<part;i++){
         if(entrada[i].posicion == posicion){
             return i;
         }
@@ -47,11 +49,11 @@ int index(int posicion, particulas * entrada, int part){
 
 void calcularEnergActual(particulas * entrada, int N, particulas * salida, int part){
     //se asume q salida viene con N espacios reservados, todos en 0.
-    int indice;
+    int indiceS;
     for(int i=0;i<N;i++){
-        indice = index(i, entrada, part);
-        if (indice!=-1){
-            salida[i].energia = entrada[indice].energia;
+        indiceS = indice(i, entrada, part);
+        if (indiceS!=-1){
+            salida[i].energia = entrada[indiceS].energia;
             salida[i].posicion = i;
         }
     }
@@ -85,8 +87,21 @@ N raiz(|j-i| + 1)
 11,12
 */
 
+//formula = Ei + Ej,i
+//Ej,i = 10^3 * Ej / N * sqrt(abs(j-i) + 1)
+
 void calcularEnerg(particulas * entrada, int N, particulas * salida, int part){
-    
+    int Ei, Ej;
+    double Ej_i;
+    for (int i = 0; i < N; i++){
+        Ei=entrada[i].energia;
+        Ej_i = 0;
+        for(int j=0;j<N;j++){
+            Ej = entrada[j].energia;
+            Ej_i += (pow(10,3) * Ej) / (N * sqrt(abs(j-i) + 1));
+        }
+        salida[i].energia = Ej_i;
+    }
 }
 
 

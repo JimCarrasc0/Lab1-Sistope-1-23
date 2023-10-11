@@ -17,11 +17,19 @@ To do:
 
 
 int main(int argc, char* argv[]){
+    if(argc<1){
+        printf("Error: Argumentos insuficientes\n");
+        exit(1);
+    }
+    
+    printf("%s\n",argv[1]);
+
+
     // Se solicita el numero de particulas (N) a agregar
     //int N = atoi(argv[1]);
-    N=10;
+    int N=10;
     
-    MIN_ENERGIA = 0.001 / N;
+    int MIN_ENERGIA = 0.001 / N;
 
     return 0;
 }
