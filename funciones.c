@@ -98,7 +98,11 @@ void calcularEnerg(particulas * entrada, int N, particulas * salida, int part){
         Ej_i = 0;
         for(int j=0;j<N;j++){
             Ej = entrada[j].energia;
-            Ej_i += (pow(10,3) * Ej) / (N * sqrt(abs(j-i) + 1));
+            if (i != j){
+                Ej_i += (pow(10,3) * Ej) / (N * sqrt(abs(j-i) + 1));
+                }
+            else{
+                Ej_i += Ej;
         }
         salida[i].energia = Ej_i;
     }
