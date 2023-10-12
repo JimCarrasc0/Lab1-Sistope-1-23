@@ -12,7 +12,7 @@ typedef struct particulas{
 //Entradas: Nombre del archivo a leer (String), Puntero a lista de particulas 
 //Salida: Cantidad de particulas, lista de particulas por referencia
 //Descripcion: Funcion que lee un archivo y lo almacena en memoria, ademas de entregar la cantidad de particulas
-int lecturaArchivo(char * nombre, particulas ** entrada);}
+int lecturaArchivo(char * nombre, particulas ** entrada);
 
 //Entradas: Posicion de una particula (int), lista de particulas, cantidad de particulas (int)
 //Salida: Indice de una particula
